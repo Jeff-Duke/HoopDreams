@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
 import {
   StyleSheet,
   Text,
@@ -20,12 +22,23 @@ class Home extends Component{
   constructor (props) {
    super(props);
    this.state = {
-     searchTerm: null,
+     searchTerm: "we will see",
+     players: []
    };
  }
 
- render() {
+ componentDidMount() {
+   this.callForData()
+     .then(r => this.setState({ players: r.data }))
+     .catch(error => console.log('failure', error));
+ }
 
+ callForData() {
+   return axios.get("http://localhost:3001/1610612739");
+ }
+
+
+ render() {
    const { user, team } = this.props;
    if (user) {
      return (
@@ -35,7 +48,10 @@ class Home extends Component{
          <Text >Hello World</Text>
          <Text >Hello World</Text>
          <Text >Hello Nice World</Text>
+        <TouchableHighlight onPress={this.callForData}><Text >BUTTON</Text>
+        </TouchableHighlight>
        </View>
+
      )
    }
    return (null);
