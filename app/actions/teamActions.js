@@ -2,7 +2,9 @@
 import { types } from './actionTypes';
 
 export const actionCreators = {
-  getTeam: (data) => {
-    return { type: types.GET_TEAM, data: data };
+  getTeam: (teamInfo) => {
+    .then(data => {
+      return { type: types.GET_TEAM, data: data }
+    });
   }
 };
