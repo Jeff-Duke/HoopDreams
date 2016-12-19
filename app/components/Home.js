@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+const teams = require('../../data/teams');
+
 import {
   StyleSheet,
   Text,
@@ -12,33 +14,54 @@ import {
   TextInput,
   ScrollView,
   Switch,
-  Animated
+  Animated,
+  Picker,
+  Item
 } from 'react-native';
 
 import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 
+import Row from './Row';
+
 class Home extends Component{
   constructor (props) {
    super(props);
    this.state = {
-     searchTerm: "we will see",
-     players: []
+     searchTerm: 'we will see',
+     players: this.props.team || [],
+     selectedTeam: 1610612739,
    };
  }
+
+ componentDidUpdate() {
+   this.callForData()
+     .then(r => this.setState({ players: r.data }))
+     .catch(error => console.log('failure', error));
+ }
+
+ fetchTeamDashboard(TeamID) {
+  fetch(apiEndpoint+this.state.selectedTeam)
+  .then(response => response.text())
+  .then(responseText => dispatch(mapTeamToStore(responseText)))
+  .catch(err => console.log('Error fetching team: ',err));
+}
 
  render() {
    const { user, team } = this.props;
    if (user) {
      return (
        <View >
-         <Text >Hello World</Text>
-         <Text >Hello World</Text>
-         <Text >Hello World</Text>
-         <Text >Hello World</Text>
-         <Text >Hello Nice World</Text>
-        <TouchableHighlight onPress={this.props.fetchTeamDashboard("1610612737")}><Text >BUTTON</Text>
-        </TouchableHighlight>
+        <Picker
+           style={styles.scrollView}
+           selectedValue={this.state.selectedTeam}
+           onValueChange={(team) => {
+             this.setState({ selectedTeam: team })
+           }}>
+           {teams.map(function(team, i) {
+             return <Picker.Item label={team.teamName} value={team.teamId} key={i} />
+           })}
+         </Picker>
        </View>
 
      )
@@ -116,10 +139,5 @@ const styles = StyleSheet.create({
   },
   apiButtonLabel: {
     fontSize: 24,
-  },
-  scrollView: {
-    top: 20,
-    backgroundColor: '#1E77E2',
-    height: 400
   },
 });

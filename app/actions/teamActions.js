@@ -8,10 +8,5 @@ export const mapTeamToStore = (team) => {
   };
 };
 
-export const fetchTeamDashboard = (TeamID) => {
-  fetch(apiEndpoint+TeamID)
-  .then(response => response.text())
-  .then(responseText => dispatch(mapTeamToStore(responseText)))
-  .catch(err => console.log('Error fetching team: ',err));
-};
+
 
