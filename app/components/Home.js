@@ -1,6 +1,6 @@
+'use strict';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 const teams = require('../../data/teams');
 
@@ -20,42 +20,44 @@ import {
 } from 'react-native';
 
 import teamContainer from '../containers/teamContainer';
-import userContainer from '../containers/userContainer';
 
-import Row from './Row'
+import Row from './Row';
+
+const apiEndpoint = 'http://localhost:3001/';
 
 class Home extends Component{
   constructor (props) {
    super(props);
    this.state = {
-     searchTerm: "we will see",
+     searchTerm: 'we will see',
      players: [],
      selectedTeam: 1610612739,
    };
  }
 
  componentDidMount() {
-   this.callForData()
-     .then(r => this.setState({ players: r.data }))
-     .catch(error => console.log('failure', error));
+   console.log('component mounted, current state: ', this.state);
  }
-
- componentDidUpdate() {
-   this.callForData()
-     .then(r => this.setState({ players: r.data }))
-     .catch(error => console.log('failure', error));
- }
-
- callForData() {
-   return axios.get("http://localhost:3001/"+this.state.selectedTeam);
- }
+ 
+ 
+ fetchTeamDashboard() {
+  const {mapTeamToStore} = this.props;
+  fetch(apiEndpoint+this.state.selectedTeam)
+    .then(response => response.text())
+    .then(responseText => {
+      mapTeamToStore(JSON.parse(responseText));
+    })
+    .then(() => this.setState({ players: this.props.team }))
+    .then(() => { console.log('team selected, new state: ', this.state);})
+    .catch(err => console.log('Error fetching team: ',err));
+}
 
  render() {
-   const { user, team } = this.props;
-   if (user) {
+   const { team } = this.props;
+
      return (
        <View >
-        <Picker
+          <Picker
            style={styles.scrollView}
            selectedValue={this.state.selectedTeam}
            onValueChange={(team) => {
@@ -65,17 +67,15 @@ class Home extends Component{
              return <Picker.Item label={team.teamName} value={team.teamId} key={i} />
            })}
          </Picker>
+         <TouchableHighlight onPress={() => this.fetchTeamDashboard()}>
+          <Text>Set Team</Text>
+        </TouchableHighlight>
        </View>
-
      )
    }
-   return (null);
-  }
 }
 
-export default teamContainer(
-                userContainer(Home)
-              )
+export default teamContainer(Home);
 
 const styles = StyleSheet.create({
   container: {

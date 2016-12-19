@@ -9,14 +9,11 @@ import {
 } from 'react-native';
 
 import Login from './Login';
-import Home from './Home';
-// import Profile from './Profile';
+import Home from '../components/Home';
 
 const routes = [
   { component: Login, title: 'Login to access NBA data'},
-  { component: Home, title: 'Search for books' },
-  // { component: Visualize, title: 'Visualize book data' },
-  // { component: Profile, title: 'Profile' }
+  { component: Home, title: 'Pick a team' },
 ];
 
 export default class App extends Component {
