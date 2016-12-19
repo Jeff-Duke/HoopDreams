@@ -46,6 +46,7 @@ export default class App extends Component {
 
 var NavigationBarRouteMapper = {
   LeftButton(route, navigator) {
+    if(route.title === "Login to access NBA data") { return null }
     if(route.title !== "User Profile") {
       return (
         <TouchableHighlight onPress={() => navigator.push({
@@ -70,6 +71,7 @@ var NavigationBarRouteMapper = {
   },
 
   RightButton(route, navigator) {
+     if(route.title === "Login to access NBA data") { return null }
     if(route.title !== "Pick a team") {
       return (
         <TouchableHighlight onPress={(index) => navigator.push({
