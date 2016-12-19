@@ -18,7 +18,7 @@ app.get('/:TeamID', function(req, res) {
     response.playersSeasonTotals.map((player) => {
       let obj = {};
       const { playerName, wPct, playerId, pts, oreb, dreb, ast, stl, blk, tov } = player;
-      Object.assign(obj, { playerName, wPct, playerId, pts, oreb, dreb, ast, stl, blk, tov });
+      Object.assign(obj, { name: playerName, wPct, playerId, pts, oreb, dreb, ast, stl, blk, tov });
       result.push(obj);
     });
     res.send(result);

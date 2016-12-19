@@ -1,6 +1,6 @@
 'use strict';
 import { List } from 'immutable';
-const teamData = (state = [], action) => {
+const teamData = (state = null, action) => {
   
   switch (action.type) {
     case 'FETCH_TEAM':

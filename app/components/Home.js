@@ -23,13 +23,14 @@ import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 import Login from '../components/Login';
 
+import { Pie } from 'react-native-pathjs-charts';
+
 const apiEndpoint = 'http://localhost:3001/';
 
 class Home extends Component{
   constructor (props) {
    super(props);
    this.state = {
-     players: [],
      selectedTeam: 1610612739,
    };
  }
@@ -41,20 +42,48 @@ class Home extends Component{
     .then(responseText => {
       mapTeamToStore(JSON.parse(responseText));
     })
-    .then(() => {
-      const teamData = this.props.teamData.toArray();
-      this.setState({ teamData });
-    })
     .catch(err => console.log('Error fetching team: ',err));
 }
 
  render() {
-   const { team, user } = this.props;
+   const { user } = this.props;
+   let teamData;
+   if (!!this.props.teamData) { 
+     teamData = this.props.teamData.toArray();
+
+     console.log('team data!!', teamData);
+  }
+   let options = {
+      margin: {
+        top: 20,
+        left: 10,
+        right: 20,
+        bottom: 20
+      },
+      width: 350,
+      height: 350,
+      color: '#FFEBCD',
+      r: 50,
+      R: 150,
+      legendPosition: 'topLeft',
+      animate: {
+        type: 'oneByOne',
+        duration: 200,
+        fillTransition: 3
+      },
+      label: {
+        fontFamily: 'Arial',
+        fontSize: 8,
+        fontWeight: true,
+        color: '#ECF0F1'
+      }
+    };
+
+
    if(user) {
      return (
        <View >
           <Picker
-           style={styles.scrollView}
            selectedValue={this.state.selectedTeam}
            onValueChange={(team) => {
              this.setState({ selectedTeam: team })
@@ -66,6 +95,26 @@ class Home extends Component{
          <TouchableHighlight onPress={() => this.fetchTeamDashboard()}>
           <Text>Set Team</Text>
         </TouchableHighlight>
+        {!!teamData ? 
+        <View style={styles.charts}>
+          <Text>Offensive Rebounds by Player</Text>
+          <Pie
+            data={teamData}
+            options={options}
+            accessorKey="oreb" />
+          <Text>Defensive rebounds by Player</Text>
+          <Pie
+            data={teamData}
+            options={options}
+            accessorKey="dreb" />
+          <Text>Win Percentage</Text>
+          <Pie
+            data={teamData}
+            options={options}
+            accessorKey="wPct" />
+      </View>
+          : f => f
+        }
        </View>
      )
    }
@@ -85,64 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#fff',
   },
-  messageBox: {
-    flex: 1,
-    marginTop: 100,
-  },
-  avatar: {
-    alignSelf: 'center',
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-    top: 80,
-  },
-  form: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    top: 85,
-    padding: 5,
-    marginBottom: 15,
-    marginLeft: 15,
-    marginRight: 15,
-  },
-  ebook: {
-    top: 95,
-    left: 15,
-    marginBottom: 10,
-  },
-  orderByNewest: {
-    top: 55,
-    left: 150,
-    marginBottom: 10,
-  },
-  eBookLabel: {
-    top: 50,
-    left: 15,
-    marginBottom: 10,
-    fontSize: 12,
-  },
-  newestLabel: {
-    top: 25,
-    left: 150,
-    marginBottom: 10,
-    fontSize: 12,
-  },
-  callApiButton: {
-    height: 50,
-    alignSelf: 'stretch',
-    backgroundColor: '#fff',
-    borderColor: '#1E77E2',
-    borderWidth: 2,
-    margin: 10,
-    shadowColor: '#1b71E2',
-    shadowRadius: 10,
-    borderRadius: 5,
-    top: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  apiButtonLabel: {
-    fontSize: 24,
-  },
+  charts: {
+    flexDirection: 'column',
+  }
 });
