@@ -169,10 +169,4 @@ const styles = StyleSheet.create({
   apiButtonLabel: {
     fontSize: 24,
   },
-  scrollView: {
-    height: 24,
-    padding: 5,
-    backgroundColor: 'rgba(30, 119, 226, .25)',
-    marginTop: 50
-  },
 });
