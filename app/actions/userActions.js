@@ -1,5 +1,5 @@
 'use strict';
-import {types} from './actionTypes';
+import { types } from './actionTypes';
 
 export const actionCreators = {
   getUser: (data) => {
