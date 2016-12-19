@@ -2,6 +2,39 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
+const teams = [
+  "Atlanta Hawks",
+  "Boston Celtics",
+  "Brooklyn Nets",
+  "Charlotte Hornets",
+  "Chicago Bulls",
+  "Cleveland Cavaliers",
+  "Dallas Mavericks",
+  "Denver Nuggets",
+  "Detroit Pistons",
+  "Golden State Warriors",
+  "Houston Rockets",
+  "Indiana Pacers",
+  "Los Angeles Clippers",
+  "Los Angeles Lakers",
+  "Memphis Grizzlies",
+  "Miami Heat",
+  "Milwaukee Bucks",
+  "Minnesota Timberwolves",
+  "New Orleans Pelicans",
+  "New York Knicks",
+  "Oklahoma City Thunder",
+  "Orlando Magic",
+  "Philadelphia 76ers",
+  "Phoenix Suns",
+  "Portland Trail Blazers",
+  "Sacramento Kings",
+  "San Antonio Spurs",
+  "Toronto Raptors",
+  "Utah Jazz",
+  "Washington Wizards"
+];
+
 import {
   StyleSheet,
   Text,
@@ -12,18 +45,23 @@ import {
   TextInput,
   ScrollView,
   Switch,
-  Animated
+  Animated,
+  Picker,
+  Item
 } from 'react-native';
 
 import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
+
+import Row from './Row'
 
 class Home extends Component{
   constructor (props) {
    super(props);
    this.state = {
      searchTerm: "we will see",
-     players: []
+     players: [],
+     selectedTeam: 'Cleveland Cavaliers'
    };
  }
 
@@ -39,17 +77,21 @@ class Home extends Component{
 
 
  render() {
+   console.log(this.state.selectedTeam);
    const { user, team } = this.props;
    if (user) {
      return (
        <View >
-         <Text >Hello World</Text>
-         <Text >Hello World</Text>
-         <Text >Hello World</Text>
-         <Text >Hello World</Text>
-         <Text >Hello Nice World</Text>
-        <TouchableHighlight onPress={this.callForData}><Text >BUTTON</Text>
-        </TouchableHighlight>
+        <Picker
+           style={styles.scrollView}
+           selectedValue={this.state.selectedTeam}
+           onValueChange={(team) => this.setState({ selectedTeam: team })}>
+           {teams.map(function(team, i) {
+             return <Picker.Item label={team} value={team} key={i} />
+           })}
+         </Picker>
+         <TouchableHighlight onPress={this.callForData}
+         style={styles.button}><Text >BUTTON</Text></TouchableHighlight>
        </View>
 
      )
@@ -129,8 +171,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   scrollView: {
-    top: 20,
-    backgroundColor: '#1E77E2',
-    height: 400
+    height: 24,
+    padding: 5,
+    backgroundColor: 'rgba(30, 119, 226, .25)',
+    marginTop: 50
   },
 });
