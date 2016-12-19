@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { mapTeamToStore } from '../actions/teamActions';
 
 const mapStateToProps = (state) => {
-  return { team: state.team };
+  return { teamData: state.team };
 };
 
 const mapDispatchToProps = (dispatch) => {

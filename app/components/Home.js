@@ -20,8 +20,8 @@ import {
 } from 'react-native';
 
 import teamContainer from '../containers/teamContainer';
-
-import Row from './Row';
+import userContainer from '../containers/userContainer';
+import Login from '../components/Login';
 
 const apiEndpoint = 'http://localhost:3001/';
 
@@ -29,16 +29,10 @@ class Home extends Component{
   constructor (props) {
    super(props);
    this.state = {
-     searchTerm: 'we will see',
      players: [],
      selectedTeam: 1610612739,
    };
  }
-
- componentDidMount() {
-   console.log('component mounted, current state: ', this.state);
- }
- 
  
  fetchTeamDashboard() {
   const {mapTeamToStore} = this.props;
@@ -47,14 +41,16 @@ class Home extends Component{
     .then(responseText => {
       mapTeamToStore(JSON.parse(responseText));
     })
-    .then(() => this.setState({ players: this.props.team }))
-    .then(() => { console.log('team selected, new state: ', this.state);})
+    .then(() => {
+      const teamData = this.props.teamData.toArray();
+      this.setState({ teamData });
+    })
     .catch(err => console.log('Error fetching team: ',err));
 }
 
  render() {
-   const { team } = this.props;
-
+   const { team, user } = this.props;
+   if(user) {
      return (
        <View >
           <Picker
@@ -73,9 +69,15 @@ class Home extends Component{
        </View>
      )
    }
+   else {
+     return (
+       <Login />
+     )
+   }
+  }
 }
 
-export default teamContainer(Home);
+export default userContainer(teamContainer(Home));
 
 const styles = StyleSheet.create({
   container: {
