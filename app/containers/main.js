@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 //we don't have a reducer yet
 import reducers from '../reducers/index';
 
-const store = createStore(reducers);
+const middleware = applyMiddleware(thunk);
+
+const store = createStore(reducers, middleware);
 
 import App from '../components/App';
 

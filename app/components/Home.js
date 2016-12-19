@@ -1,6 +1,6 @@
+'use strict';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 import {
   StyleSheet,
@@ -27,17 +27,6 @@ class Home extends Component{
    };
  }
 
- componentDidMount() {
-   this.callForData()
-     .then(r => this.setState({ players: r.data }))
-     .catch(error => console.log('failure', error));
- }
-
- callForData() {
-   return axios.get("http://localhost:3001/1610612739");
- }
-
-
  render() {
    const { user, team } = this.props;
    if (user) {
@@ -48,7 +37,7 @@ class Home extends Component{
          <Text >Hello World</Text>
          <Text >Hello World</Text>
          <Text >Hello Nice World</Text>
-        <TouchableHighlight onPress={this.callForData}><Text >BUTTON</Text>
+        <TouchableHighlight onPress={this.props.fetchTeamDashboard("1610612737")}><Text >BUTTON</Text>
         </TouchableHighlight>
        </View>
 

@@ -1,10 +1,17 @@
 'use strict';
-import { types } from './actionTypes';
+const apiEndpoint = 'http://localhost:3001/1610612739/';
 
-export const actionCreators = {
-  getTeam: (teamInfo) => {
-    .then(data => {
-      return { type: types.GET_TEAM, data: data }
-    });
-  }
+export const mapTeamToStore = (team) => {
+  return {
+    type: 'FETCH_TEAM',
+    team
+  };
 };
+
+export const fetchTeamDashboard = (TeamID) => {
+  fetch(apiEndpoint+TeamID)
+  .then(response => response.text())
+  .then(responseText => dispatch(mapTeamToStore(responseText)))
+  .catch(err => console.log('Error fetching team: ',err));
+};
+

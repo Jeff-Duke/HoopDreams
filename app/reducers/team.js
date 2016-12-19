@@ -1,13 +1,9 @@
 'use strict';
-import * as types from '../actions/actionTypes';
 
-const initialState = [];
-
-const team = (state = initialState, action) => {
-  const { type, data } = action;
-  switch(type) {
-    case 'GET_TEAM':
-      return data;
+const team = (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_TEAM':
+    return state.concat(action.team);
   }
   return state;
 };
