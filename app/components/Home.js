@@ -2,38 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-const teams = [
-  "Atlanta Hawks",
-  "Boston Celtics",
-  "Brooklyn Nets",
-  "Charlotte Hornets",
-  "Chicago Bulls",
-  "Cleveland Cavaliers",
-  "Dallas Mavericks",
-  "Denver Nuggets",
-  "Detroit Pistons",
-  "Golden State Warriors",
-  "Houston Rockets",
-  "Indiana Pacers",
-  "Los Angeles Clippers",
-  "Los Angeles Lakers",
-  "Memphis Grizzlies",
-  "Miami Heat",
-  "Milwaukee Bucks",
-  "Minnesota Timberwolves",
-  "New Orleans Pelicans",
-  "New York Knicks",
-  "Oklahoma City Thunder",
-  "Orlando Magic",
-  "Philadelphia 76ers",
-  "Phoenix Suns",
-  "Portland Trail Blazers",
-  "Sacramento Kings",
-  "San Antonio Spurs",
-  "Toronto Raptors",
-  "Utah Jazz",
-  "Washington Wizards"
-];
+const teams = require('../../data/teams');
 
 import {
   StyleSheet,
@@ -61,7 +30,7 @@ class Home extends Component{
    this.state = {
      searchTerm: "we will see",
      players: [],
-     selectedTeam: 'Cleveland Cavaliers'
+     selectedTeam: 1610612739,
    };
  }
 
@@ -71,12 +40,18 @@ class Home extends Component{
      .catch(error => console.log('failure', error));
  }
 
+ componentDidUpdate() {
+   this.callForData()
+     .then(r => this.setState({ players: r.data }))
+     .catch(error => console.log('failure', error));
+ }
+
  callForData() {
-   return axios.get("http://localhost:3001/1610612739");
+   return axios.get("http://localhost:3001/"+this.state.selectedTeam);
  }
 
  render() {
-   console.log(this.state.selectedTeam);
+   console.log(this.state.selectedTeam, this.state.players);
    const { user, team } = this.props;
    if (user) {
      return (
@@ -84,13 +59,13 @@ class Home extends Component{
         <Picker
            style={styles.scrollView}
            selectedValue={this.state.selectedTeam}
-           onValueChange={(team) => this.setState({ selectedTeam: team })}>
+           onValueChange={(team) => {
+             this.setState({ selectedTeam: team })
+           }}>
            {teams.map(function(team, i) {
-             return <Picker.Item label={team} value={team} key={i} />
+             return <Picker.Item label={team.teamName} value={team.teamId} key={i} />
            })}
          </Picker>
-         <TouchableHighlight onPress={this.callForData}
-         style={styles.button}><Text >BUTTON</Text></TouchableHighlight>
        </View>
 
      )
