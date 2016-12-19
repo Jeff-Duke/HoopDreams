@@ -75,7 +75,6 @@ class Home extends Component{
    return axios.get("http://localhost:3001/1610612739");
  }
 
-
  render() {
    console.log(this.state.selectedTeam);
    const { user, team } = this.props;
