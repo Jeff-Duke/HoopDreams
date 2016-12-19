@@ -51,7 +51,6 @@ class Home extends Component{
  }
 
  render() {
-   console.log(this.state.selectedTeam, this.state.players);
    const { user, team } = this.props;
    if (user) {
      return (
