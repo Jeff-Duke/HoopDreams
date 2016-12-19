@@ -1,13 +1,14 @@
 'use strict';
-
-const team = (state = [], action) => {
+import { List } from 'immutable';
+const teamData = (state = [], action) => {
+  
   switch (action.type) {
     case 'FETCH_TEAM':
-      const newState = [];
-      return newState.concat(action.team);
+      const team = List.of(...action.team);
+      return team;
     
     default: return state;
   }
 };
 
-export default team;
+export default teamData;

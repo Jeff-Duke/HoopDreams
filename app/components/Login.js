@@ -56,7 +56,7 @@ class Login extends Component{
   }
 }
 
-export default userContainer(Login)
+export default userContainer(Login);
 
 const styles = StyleSheet.create({
   container: {
