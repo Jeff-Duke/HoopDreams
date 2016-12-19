@@ -9,11 +9,13 @@ import {
 } from 'react-native';
 
 import Login from './Login';
-import Home from '../components/Home';
+import Home from './Home';
+import Profile from './Profile';
 
 const routes = [
   { component: Login, title: 'Login to access NBA data'},
   { component: Home, title: 'Pick a team' },
+  { component: Profile, title: 'User Profile' },
 ];
 
 export default class App extends Component {
@@ -24,7 +26,7 @@ export default class App extends Component {
   render() {
       return (
          <Navigator style={styles.navigator}
-          initialRoute={routes[1]}
+          initialRoute={routes[0]}
           initialRouteStack={routes}
           renderScene={(route, navigator) => {
             let RouteComponent = route.component;
@@ -43,22 +45,38 @@ export default class App extends Component {
 }
 
 var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    if(index > 0) {
+  LeftButton(route, navigator) {
+    if(route.title !== "User Profile") {
       return (
-        <TouchableHighlight onPress={() => navigator.pop()}>
-          <Text style={styles.prevButton}>Prev</Text>
+        <TouchableHighlight onPress={() => navigator.push({
+          component: Profile,
+          title: "User Profile"
+        })}>
+          <Text style={styles.prevButton}>Profile</Text>
+        </TouchableHighlight>
+      )
+    }
+    if(route.title === "User Profile") {
+      return (
+        <TouchableHighlight onPress={() => navigator.push({
+          component: Login,
+          title: 'Login to access NBA data'
+        })}>
+          <Text style={styles.prevButton}>Logout</Text>
         </TouchableHighlight>
       )
     }
     else { return null }
   },
 
-  RightButton(route, navigator, index, navState) {
-    if(index > 0) {
+  RightButton(route, navigator) {
+    if(route.title !== "Pick a team") {
       return (
-        <TouchableHighlight onPress={() => navigator.push(routes[index + 1])}>
-          <Text style={styles.nextButton}>Next</Text>
+        <TouchableHighlight onPress={(index) => navigator.push({
+          component: Home,
+          title: "Pick a team"
+        })}>
+          <Text style={styles.nextButton}>Search</Text>
         </TouchableHighlight>
       )
     }

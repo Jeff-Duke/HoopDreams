@@ -49,8 +49,7 @@ class Login extends Component{
         getUser(profile)
         this.props.navigator.push({
           component: Home,
-          title: 'Search for teams',
-          token: token
+          title: "Pick a team",
         })
     })
   }
