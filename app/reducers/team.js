@@ -3,9 +3,11 @@
 const team = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_TEAM':
-    return state.concat(action.team);
+      const newState = [];
+      return newState.concat(action.team);
+    
+    default: return state;
   }
-  return state;
 };
 
 export default team;

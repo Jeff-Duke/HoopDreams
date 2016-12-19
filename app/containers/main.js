@@ -3,7 +3,6 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-//we don't have a reducer yet
 import reducers from '../reducers/index';
 
 const middleware = applyMiddleware(thunk);

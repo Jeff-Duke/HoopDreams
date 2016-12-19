@@ -14,7 +14,7 @@ import Auth0Lock from 'react-native-lock';
 var credentials = require('../../auth0-credentials');
 var lock = new Auth0Lock(credentials);
 
-import Home from './Home';
+import Home from '../components/Home';
 
 class Login extends Component{
   constructor (props) {

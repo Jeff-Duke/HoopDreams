@@ -1,6 +1,6 @@
 'use strict';
 import { connect } from 'react-redux';
-import { fetchTeamDashboard } from '../actions/teamActions';
+import { mapTeamToStore } from '../actions/teamActions';
 
 const mapStateToProps = (state) => {
   return { team: state.team };
@@ -8,8 +8,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchTeamDashboard: (teamID) => {
-       dispatch(fetchTeamDashboard(teamID));
+    mapTeamToStore: (team) => {
+       dispatch(mapTeamToStore(team));
      }
   };
 };
