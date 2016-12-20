@@ -1,12 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Dimensions from 'Dimensions';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableHighlight,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 
 import userContainer from '../containers/userContainer';
 import Auth0Lock from 'react-native-lock';
@@ -16,9 +10,9 @@ var lock = new Auth0Lock(credentials);
 
 import Home from '../components/Home';
 
-class Login extends Component{
-  constructor (props) {
-   super(props);
+class Login extends Component {
+  constructor(props) {
+    super(props);
   }
 
   render() {
@@ -38,19 +32,18 @@ class Login extends Component{
   }
 
   _onLogin() {
-    const { getUser } = this.props
+    const {getUser} = this.props
 
-    lock.show({
-      }, (err, profile, token) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        getUser(profile)
-        this.props.navigator.push({
-          component: Home,
-          title: "Pick a team",
-        })
+    lock.show({}, (err, profile, token) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      getUser(profile)
+      this
+        .props
+        .navigator
+        .push({component: Home, title: "Pick a team"})
     })
   }
 }
@@ -62,31 +55,24 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   messageBox: {
     flex: 1,
-    justifyContent: 'center',
-  },
-  badge: {
-    top: 20,
-    alignSelf: 'center',
-    marginRight: 30,
-    height: Dimensions.get('window').width,
-    resizeMode: Image.resizeMode.contain,
+    justifyContent: 'center'
   },
   title: {
     fontSize: 48,
     fontWeight: '100',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   signInButton: {
     height: 50,
     alignSelf: 'stretch',
     backgroundColor: '#D9DADF',
-    margin: 10,
+    margin: 15,
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
