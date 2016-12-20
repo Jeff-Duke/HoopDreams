@@ -95,21 +95,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   navTitle: {
+    color: '#FFFFFF',
     marginTop:4,
     fontSize:16,
   },
   prevButton: {
+    color: '#FFFFFF',
    	fontSize: 16,
     marginLeft:15,
     marginTop:2,
   },
   nextButton: {
+    color: '#FFFFFF',
     fontSize: 16,
     marginRight:15,
     marginTop:2,
   },
   nav: {
     height: 50,
-    backgroundColor: '#1E77E2',
+    backgroundColor: '#00459E',
   }
 });
