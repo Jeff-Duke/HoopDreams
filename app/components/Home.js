@@ -53,7 +53,7 @@ class Home extends Component {
       return (
         <View style={styles.container}>
           <Image style={styles.logo} source={require('../MJlogowhitebackground.jpeg')}/>
-          <Text sytle={styles.text}>Select a team:</Text>
+          <Text style={styles.text}>Select a team:</Text>
           <Picker
             selectedValue={this.state.selectedTeam}
             onValueChange={(team) => {
@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
       .get('window')
       .width,
     resizeMode: Image.resizeMode.contain,
-    marginBottom: -50
+    marginBottom: -75
   }
 });
