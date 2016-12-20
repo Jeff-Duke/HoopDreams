@@ -1,66 +1,51 @@
 'use strict';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 const teams = require('../../data/teams');
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableHighlight,
-  Alert,
-  TextInput,
-  ScrollView,
-  Switch,
-  Animated,
-  Item
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 
 import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 import Login from './Login';
 
-import { Pie } from 'react-native-pathjs-charts';
+import {Pie} from 'react-native-pathjs-charts';
 
 const apiEndpoint = 'http://localhost:3001/';
 
-class Team extends Component{
-  constructor (props) {
-   super(props);
-   this.state = {
-     selectedTeam: 1610612739,
-     updating: null
-   };
- }
-
- componentDidMount() {
-   this.fetchTeamDashboard();
- }
-
-
- fetchTeamDashboard() {
-  this.setState({ updating: true });
-  const {mapTeamToStore} = this.props;
-  fetch(apiEndpoint+this.state.selectedTeam)
-    .then(response => response.text())
-    .then(responseText => {
-      mapTeamToStore(JSON.parse(responseText));
-      this.setState({ updating: false });
-    })
-    .catch(err => console.log('Error fetching team: ',err));
-}
-
- render() {
-   const { user } = this.props;
-   let teamData;
-   if (!!this.props.teamData) {
-     teamData = this.props.teamData.toArray();
-
-     console.log('team data!!', teamData);
+class Team extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTeam: 1610612739,
+      updating: null
+    };
   }
-   let options = {
+
+  componentDidMount() {
+    this.fetchTeamDashboard();
+  }
+
+  fetchTeamDashboard() {
+    this.setState({updating: true});
+    const {mapTeamToStore} = this.props;
+    fetch(apiEndpoint + this.state.selectedTeam)
+      .then(response => response.text())
+      .then(responseText => {
+        mapTeamToStore(JSON.parse(responseText));
+        this.setState({updating: false});
+      })
+      .catch(err => console.log('Error fetching team: ', err));
+  }
+
+  render() {
+    const {user} = this.props;
+    let teamData;
+    if (!!this.props.teamData) {
+      teamData = this.props.teamData.toArray();
+    }
+    let pieOptions = {
       margin: {
         top: 20,
         left: 10,
@@ -72,7 +57,7 @@ class Team extends Component{
       color: '#d7001e',
       r: 50,
       R: 150,
-      legendPosition: 'topLeft',
+      legendPosition: 'top',
       animate: {
         type: 'oneByOne',
         duration: 200,
@@ -80,7 +65,7 @@ class Team extends Component{
       },
       label: {
         fontFamily: 'Arial',
-        fontSize: 8,
+        fontSize: 10,
         fontWeight: true,
         color: '#ECF0F1'
       },
@@ -91,45 +76,36 @@ class Team extends Component{
         margin: 10,
         borderRadius: 5,
         justifyContent: 'center',
-        alignItems: 'center',
-      },
+        alignItems: 'center'
+      }
     };
 
+    if (user) {
+      return (
+        <View style={styles.container}>
+          {!!teamData && !this.state.updating
+            ? <ScrollView style={styles.charts}>
+                <Text>Offensive Rebounds by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="oreb"/>
 
-   if(user) {
-     return (
-       <View style={styles.container}>
-        {!!teamData && !this.state.updating ?
-        <ScrollView style={styles.charts}>
-          <Text>Offensive Rebounds by Player</Text>
-          <Pie
-            data={teamData}
-            options={options}
-            accessorKey="oreb" />
-          <Text>Defensive rebounds by Player</Text>
-          <Pie
-            data={teamData}
-            options={options}
-            accessorKey="dreb" />
-          <Text>Win Percentage</Text>
-          <Pie
-            data={teamData}
-            options={options}
-            accessorKey="wPct" />
-      </ScrollView>
-          : f => f
-        }
-        {!!this.state.updating ?
-          <Text>Fetching New Data...</Text> : f => f
-        }
-       </View>
-     )
-   }
-   else {
-     return (
-       <Login />
-     )
-   }
+                <Text>Defensive rebounds by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="dreb"/>
+
+                <Text>Win Percentage</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="wPct"/>
+
+              </ScrollView>
+            : f => f
+}
+          {!!this.state.updating
+            ? <Text>Fetching New Data...</Text>
+            : f => f
+}
+        </View>
+      )
+    } else {
+      return (<Login/>)
+    }
   }
 }
 
@@ -140,8 +116,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   charts: {
-    flexDirection: 'column',
+    marginTop: 50,
+    padding: 20
   }
 });

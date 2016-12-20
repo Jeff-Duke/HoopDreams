@@ -1,6 +1,6 @@
 'use strict';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 const teams = require('../../data/teams');
 
@@ -10,11 +10,6 @@ import {
   View,
   Image,
   TouchableHighlight,
-  Alert,
-  TextInput,
-  ScrollView,
-  Switch,
-  Animated,
   Picker,
   Item
 } from 'react-native';
@@ -23,69 +18,66 @@ import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 import Login from './Login';
 import Team from './Team';
+import Dimensions from 'Dimensions';
 
 const apiEndpoint = 'http://localhost:3001/';
 
-class Home extends Component{
-  constructor (props) {
-   super(props);
-   this.state = {
-     selectedTeam: 1610612739,
-     updating: null
-   };
- }
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTeam: 1610612739,
+      updating: null
+    };
+  }
 
- componentDidMount() {
-   this.fetchTeamDashboard();
- }
+  componentDidMount() {
+    this.fetchTeamDashboard();
+  }
 
+  fetchTeamDashboard() {
+    this.setState({updating: true});
+    const {mapTeamToStore} = this.props;
+    fetch(apiEndpoint + this.state.selectedTeam)
+      .then(response => response.text())
+      .then(responseText => {
+        mapTeamToStore(JSON.parse(responseText));
+        this.setState({updating: false});
+      })
+      .catch(err => console.log('Error fetching team: ', err));
+  }
 
- fetchTeamDashboard() {
-  this.setState({ updating: true });
-  const {mapTeamToStore} = this.props;
-  fetch(apiEndpoint+this.state.selectedTeam)
-    .then(response => response.text())
-    .then(responseText => {
-      mapTeamToStore(JSON.parse(responseText));
-      this.setState({ updating: false });
-    })
-    .catch(err => console.log('Error fetching team: ',err));
-}
-
- render() {
-   const { user } = this.props
-   if(user) {
-     return (
-       <View style={styles.container}>
+  render() {
+    const {user} = this.props;
+    if (user) {
+      return (
+        <View style={styles.container}>
+          <Image style={styles.logo} source={require('../MJlogowhitebackground.jpeg')}/>
+          <Text sytle={styles.text}>Select a team:</Text>
           <Picker
-           selectedValue={this.state.selectedTeam}
-           onValueChange={(team) => {
-             this.setState({ selectedTeam: team })
-             this.fetchTeamDashboard()
-           }}>
-           {teams.map(function(team, i) {
-             return <Picker.Item label={team.teamName} value={team.teamId} key={i} />
-           })}
-         </Picker>
-         <TouchableHighlight
-           style={styles.submitButton}
-           underlayColor='#949494'
-           onPress={() => {
-             this.props.navigator.push({
-             component: Team,
-             title: "Show charts",
-           });}
-           }>
-           <Text>Submit</Text>
-         </TouchableHighlight>
-       </View>
-     )
-   }
-   else {
-     return (
-       <Login />
-     )
-   }
+            selectedValue={this.state.selectedTeam}
+            onValueChange={(team) => {
+            this.setState({selectedTeam: team});
+            this.fetchTeamDashboard();
+          }}>
+            {teams
+              .map(function (team, i) {
+                return <Picker.Item label={team.teamName} value={team.teamId} key={i}/>
+              })}
+          </Picker>
+          <TouchableHighlight
+            style={styles.submitButton}
+            underlayColor='#949494'
+            onPress={() => {
+            this.props.navigator.push({component: Team, title: "Show charts"});
+          }}>
+            <Text>Submit</Text>
+          </TouchableHighlight>
+        </View>
+      )
+    } else {
+      return (<Login/>)
+    }
   }
 }
 
@@ -96,15 +88,27 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: 'stretch',
     backgroundColor: '#D9DADF',
-    margin: 10,
+    margin: 15,
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '100'
+  },
+  logo: {
+    width: Dimensions
+      .get('window')
+      .width,
+    resizeMode: Image.resizeMode.contain,
+    marginBottom: -50
   }
 });
