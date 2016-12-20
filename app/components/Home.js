@@ -31,10 +31,6 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchTeamDashboard();
-  }
-
   fetchTeamDashboard() {
     this.setState({updating: true});
     const {mapTeamToStore} = this.props;
@@ -58,7 +54,6 @@ class Home extends Component {
             selectedValue={this.state.selectedTeam}
             onValueChange={(team) => {
             this.setState({selectedTeam: team});
-            this.fetchTeamDashboard();
           }}>
             {teams
               .map(function (team, i) {
@@ -69,6 +64,7 @@ class Home extends Component {
             style={styles.submitButton}
             underlayColor='#949494'
             onPress={() => {
+            this.fetchTeamDashboard();
             this.props.navigator.push({component: Team, title: "Show charts"});
           }}>
             <Text>Submit</Text>

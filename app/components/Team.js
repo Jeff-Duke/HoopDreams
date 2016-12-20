@@ -23,22 +23,6 @@ class Team extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchTeamDashboard();
-  }
-
-  fetchTeamDashboard() {
-    this.setState({updating: true});
-    const {mapTeamToStore} = this.props;
-    fetch(apiEndpoint + this.state.selectedTeam)
-      .then(response => response.text())
-      .then(responseText => {
-        mapTeamToStore(JSON.parse(responseText));
-        this.setState({updating: false});
-      })
-      .catch(err => console.log('Error fetching team: ', err));
-  }
-
   render() {
     const {user} = this.props;
     let teamData;
@@ -95,10 +79,6 @@ class Team extends Component {
                 <Pie data={teamData} options={pieOptions} accessorKey="wPct"/>
 
               </ScrollView>
-            : f => f
-}
-          {!!this.state.updating
-            ? <Text>Fetching New Data...</Text>
             : f => f
 }
         </View>
