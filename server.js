@@ -14,6 +14,7 @@ app.listen(app.get('port'), () => {
 app.get('/:TeamID', function(req, res) {
   teamPlayerDashboard(req.params.TeamID)
   .then((response) => {
+    console.log(response.teamOverall);
     let result = [];
     response.playersSeasonTotals.map((player) => {
       let obj = {};

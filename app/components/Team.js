@@ -1,6 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import path from 'path'
 
 const teams = require('../../data/teams');
 
@@ -10,7 +11,9 @@ import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 import Login from './Login';
 
-import {Pie} from 'react-native-pathjs-charts';
+import chartOptions from '../../data/chartOptions.js';
+
+import { Pie, Radar } from 'react-native-pathjs-charts';
 
 const apiEndpoint = 'http://localhost:3001/';
 
@@ -24,45 +27,31 @@ class Team extends Component {
   }
 
   render() {
+    const { pieOptions, radarOptions } = chartOptions
     const {user} = this.props;
     let teamData;
     if (!!this.props.teamData) {
       teamData = this.props.teamData.toArray();
     }
-    let pieOptions = {
-      margin: {
-        top: 20,
-        left: 10,
-        right: 20,
-        bottom: 20
-      },
-      width: 350,
-      height: 350,
-      color: '#d7001e',
-      r: 50,
-      R: 150,
-      legendPosition: 'top',
-      animate: {
-        type: 'oneByOne',
-        duration: 200,
-        fillTransition: 3
-      },
-      label: {
-        fontFamily: 'Arial',
-        fontSize: 10,
-        fontWeight: true,
-        color: '#ECF0F1'
-      },
-      submitButton: {
-        height: 50,
-        alignSelf: 'stretch',
-        backgroundColor: '#D9DADF',
-        margin: 10,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }
-    };
+
+  //   let data = [{
+  //   "speed": 74,
+  //   "balance": 29,
+  //   "explosives": 40,
+  //   "energy": 40,
+  //   "flexibility": 30,
+  //   "agility": 25,
+  //   "endurance": 44
+  //   },
+  //   {
+  //   "speed": 80,
+  //   "balance": 12,
+  //   "explosives": 60,
+  //   "energy": 20,
+  //   "flexibility": 15,
+  //   "agility": 12,
+  //   "endurance": 90
+  // }];
 
     if (user) {
       return (
