@@ -37,3 +37,5 @@ buck-out/
 \.buckd/
 android/app/libs
 *.keystore
+
+auth0-credentials.js
