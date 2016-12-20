@@ -1,7 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import path from 'path'
 
 const teams = require('../../data/teams');
 
@@ -40,13 +39,13 @@ class Team extends Component {
           {!!teamData && !this.state.updating
             ? <ScrollView style={styles.charts}>
 
-                <Text >Total Points by player</Text>
+                <Text style={styles.text}>Total Points by Player</Text>
                 <Pie data={teamData} options={pieOptions} accessorKey="pts"/>
 
-                <Text >Total assists by Player</Text>
+                <Text style={styles.text}>Total assists by Player</Text>
                 <Pie data={teamData} options={pieOptions} accessorKey="ast"/>
 
-                <Text >Total Rebounds by Player</Text>
+                <Text style={styles.text}>Total Rebounds by Player</Text>
                 <Pie data={teamData} options={pieOptions} accessorKey="reb"/>
 
               </ScrollView>
