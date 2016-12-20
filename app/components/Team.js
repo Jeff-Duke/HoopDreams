@@ -13,7 +13,7 @@ import Login from './Login';
 
 import chartOptions from '../../data/chartOptions.js';
 
-import { Pie, Radar } from 'react-native-pathjs-charts';
+import { Pie } from 'react-native-pathjs-charts';
 
 const apiEndpoint = 'http://localhost:3001/';
 
@@ -27,45 +27,27 @@ class Team extends Component {
   }
 
   render() {
-    const { pieOptions, radarOptions } = chartOptions
+    const { pieOptions } = chartOptions
     const {user} = this.props;
     let teamData;
     if (!!this.props.teamData) {
       teamData = this.props.teamData.toArray();
     }
 
-  //   let data = [{
-  //   "speed": 74,
-  //   "balance": 29,
-  //   "explosives": 40,
-  //   "energy": 40,
-  //   "flexibility": 30,
-  //   "agility": 25,
-  //   "endurance": 44
-  //   },
-  //   {
-  //   "speed": 80,
-  //   "balance": 12,
-  //   "explosives": 60,
-  //   "energy": 20,
-  //   "flexibility": 15,
-  //   "agility": 12,
-  //   "endurance": 90
-  // }];
-
     if (user) {
       return (
         <View style={styles.container}>
           {!!teamData && !this.state.updating
             ? <ScrollView style={styles.charts}>
-                <Text>Offensive Rebounds by Player</Text>
-                <Pie data={teamData} options={pieOptions} accessorKey="oreb"/>
 
-                <Text>Defensive rebounds by Player</Text>
-                <Pie data={teamData} options={pieOptions} accessorKey="dreb"/>
+                <Text >Total Points by player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="pts"/>
 
-                <Text>Win Percentage</Text>
-                <Pie data={teamData} options={pieOptions} accessorKey="wPct"/>
+                <Text >Total assists by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="ast"/>
+
+                <Text >Total Rebounds by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="reb"/>
 
               </ScrollView>
             : f => f
@@ -91,5 +73,10 @@ const styles = StyleSheet.create({
   charts: {
     marginTop: 50,
     padding: 20
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '100'
   }
 });
