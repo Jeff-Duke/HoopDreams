@@ -21,7 +21,7 @@ import {
 
 import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
-import Login from '../components/Login';
+import Login from './Login';
 
 import { Pie } from 'react-native-pathjs-charts';
 
@@ -32,15 +32,23 @@ class Home extends Component{
    super(props);
    this.state = {
      selectedTeam: 1610612739,
+     updating: null
    };
  }
+
+ componentDidMount() {
+   this.fetchTeamDashboard();
+ }
+ 
  
  fetchTeamDashboard() {
+  this.setState({ updating: true });
   const {mapTeamToStore} = this.props;
   fetch(apiEndpoint+this.state.selectedTeam)
     .then(response => response.text())
     .then(responseText => {
       mapTeamToStore(JSON.parse(responseText));
+      this.setState({ updating: false });
     })
     .catch(err => console.log('Error fetching team: ',err));
 }
@@ -62,7 +70,7 @@ class Home extends Component{
       },
       width: 350,
       height: 350,
-      color: '#FFEBCD',
+      color: '#d7001e',
       r: 50,
       R: 150,
       legendPosition: 'topLeft',
@@ -87,16 +95,14 @@ class Home extends Component{
            selectedValue={this.state.selectedTeam}
            onValueChange={(team) => {
              this.setState({ selectedTeam: team })
+             this.fetchTeamDashboard()
            }}>
            {teams.map(function(team, i) {
              return <Picker.Item label={team.teamName} value={team.teamId} key={i} />
            })}
          </Picker>
-         <TouchableHighlight onPress={() => this.fetchTeamDashboard()}>
-          <Text>Set Team</Text>
-        </TouchableHighlight>
-        {!!teamData ? 
-        <View style={styles.charts}>
+        {!!teamData && !this.state.updating ? 
+        <ScrollView style={styles.charts}>
           <Text>Offensive Rebounds by Player</Text>
           <Pie
             data={teamData}
@@ -112,8 +118,11 @@ class Home extends Component{
             data={teamData}
             options={options}
             accessorKey="wPct" />
-      </View>
+      </ScrollView>
           : f => f
+        }
+        {!!this.state.updating ? 
+          <Text>Fetching New Data...</Text> : f => f
         }
        </View>
      )
