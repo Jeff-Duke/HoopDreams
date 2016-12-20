@@ -10,11 +10,13 @@ import {
 
 import Login from './Login';
 import Home from './Home';
+import Team from './Team';
 import Profile from './Profile';
 
 const routes = [
   { component: Login, title: 'Login to access NBA data'},
   { component: Home, title: 'Pick a team' },
+  { component: Team, title: 'Show charts' },
   { component: Profile, title: 'User Profile' },
 ];
 
@@ -72,7 +74,7 @@ var NavigationBarRouteMapper = {
 
   RightButton(route, navigator) {
      if(route.title === "Login to access NBA data") { return null }
-    if(route.title !== "Pick a team") {
+     if(route.title !== "Pick a team") {
       return (
         <TouchableHighlight onPress={(index) => navigator.push({
           component: Home,
