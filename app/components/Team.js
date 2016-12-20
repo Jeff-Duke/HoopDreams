@@ -10,7 +10,9 @@ import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 import Login from './Login';
 
-import {Pie} from 'react-native-pathjs-charts';
+import chartOptions from '../../data/chartOptions.js';
+
+import { Pie } from 'react-native-pathjs-charts';
 
 const apiEndpoint = 'http://localhost:3001/';
 
@@ -24,59 +26,27 @@ class Team extends Component {
   }
 
   render() {
+    const { pieOptions } = chartOptions
     const {user} = this.props;
     let teamData;
     if (!!this.props.teamData) {
       teamData = this.props.teamData.toArray();
     }
-    let pieOptions = {
-      margin: {
-        top: 20,
-        left: 10,
-        right: 20,
-        bottom: 20
-      },
-      width: 350,
-      height: 350,
-      color: '#d7001e',
-      r: 50,
-      R: 150,
-      legendPosition: 'top',
-      animate: {
-        type: 'oneByOne',
-        duration: 200,
-        fillTransition: 3
-      },
-      label: {
-        fontFamily: 'Arial',
-        fontSize: 10,
-        fontWeight: true,
-        color: '#ECF0F1'
-      },
-      submitButton: {
-        height: 50,
-        alignSelf: 'stretch',
-        backgroundColor: '#D9DADF',
-        margin: 10,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }
-    };
 
     if (user) {
       return (
         <View style={styles.container}>
           {!!teamData && !this.state.updating
             ? <ScrollView style={styles.charts}>
-                <Text>Offensive Rebounds by Player</Text>
-                <Pie data={teamData} options={pieOptions} accessorKey="oreb"/>
 
-                <Text>Defensive rebounds by Player</Text>
-                <Pie data={teamData} options={pieOptions} accessorKey="dreb"/>
+                <Text style={styles.text}>Total Points by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="pts"/>
 
-                <Text>Win Percentage</Text>
-                <Pie data={teamData} options={pieOptions} accessorKey="wPct"/>
+                <Text style={styles.text}>Total assists by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="ast"/>
+
+                <Text style={styles.text}>Total Rebounds by Player</Text>
+                <Pie data={teamData} options={pieOptions} accessorKey="reb"/>
 
               </ScrollView>
             : f => f
@@ -102,5 +72,10 @@ const styles = StyleSheet.create({
   charts: {
     marginTop: 50,
     padding: 20
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '100'
   }
 });
