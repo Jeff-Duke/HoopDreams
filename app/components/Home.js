@@ -22,8 +22,7 @@ import {
 import teamContainer from '../containers/teamContainer';
 import userContainer from '../containers/userContainer';
 import Login from './Login';
-
-import { Pie } from 'react-native-pathjs-charts';
+import Team from './Team';
 
 const apiEndpoint = 'http://localhost:3001/';
 
@@ -39,8 +38,8 @@ class Home extends Component{
  componentDidMount() {
    this.fetchTeamDashboard();
  }
- 
- 
+
+
  fetchTeamDashboard() {
   this.setState({ updating: true });
   const {mapTeamToStore} = this.props;
@@ -54,43 +53,10 @@ class Home extends Component{
 }
 
  render() {
-   const { user } = this.props;
-   let teamData;
-   if (!!this.props.teamData) { 
-     teamData = this.props.teamData.toArray();
-
-     console.log('team data!!', teamData);
-  }
-   let options = {
-      margin: {
-        top: 20,
-        left: 10,
-        right: 20,
-        bottom: 20
-      },
-      width: 350,
-      height: 350,
-      color: '#d7001e',
-      r: 50,
-      R: 150,
-      legendPosition: 'topLeft',
-      animate: {
-        type: 'oneByOne',
-        duration: 200,
-        fillTransition: 3
-      },
-      label: {
-        fontFamily: 'Arial',
-        fontSize: 8,
-        fontWeight: true,
-        color: '#ECF0F1'
-      }
-    };
-
-
+   const { user } = this.props
    if(user) {
      return (
-       <View >
+       <View style={styles.container}>
           <Picker
            selectedValue={this.state.selectedTeam}
            onValueChange={(team) => {
@@ -101,29 +67,17 @@ class Home extends Component{
              return <Picker.Item label={team.teamName} value={team.teamId} key={i} />
            })}
          </Picker>
-        {!!teamData && !this.state.updating ? 
-        <ScrollView style={styles.charts}>
-          <Text>Offensive Rebounds by Player</Text>
-          <Pie
-            data={teamData}
-            options={options}
-            accessorKey="oreb" />
-          <Text>Defensive rebounds by Player</Text>
-          <Pie
-            data={teamData}
-            options={options}
-            accessorKey="dreb" />
-          <Text>Win Percentage</Text>
-          <Pie
-            data={teamData}
-            options={options}
-            accessorKey="wPct" />
-      </ScrollView>
-          : f => f
-        }
-        {!!this.state.updating ? 
-          <Text>Fetching New Data...</Text> : f => f
-        }
+         <TouchableHighlight
+           style={styles.submitButton}
+           underlayColor='#949494'
+           onPress={() => {
+             this.props.navigator.push({
+             component: Team,
+             title: "Show charts",
+           });}
+           }>
+           <Text>Submit</Text>
+         </TouchableHighlight>
        </View>
      )
    }
@@ -138,12 +92,19 @@ class Home extends Component{
 export default userContainer(teamContainer(Home));
 
 const styles = StyleSheet.create({
+  submitButton: {
+    height: 50,
+    alignSelf: 'stretch',
+    backgroundColor: '#D9DADF',
+    margin: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
     backgroundColor: '#fff',
-  },
-  charts: {
-    flexDirection: 'column',
   }
 });
